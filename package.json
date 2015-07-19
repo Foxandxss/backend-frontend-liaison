@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "start": "nodemon"
+  },
   "main": "app.js",
   "dependencies": {
     "http-proxy": "^1.11.1",
