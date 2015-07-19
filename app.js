@@ -1,18 +1,20 @@
 var koa = require('koa');
 var mount = require('koa-mount');
-var views = require('koa-views');
+var httpProxy = require('http-proxy');
+
+var proxy = httpProxy.createProxyServer();
 
 var api = require('./backend/app');
 
 var app = koa();
 
-app.use(views(__dirname + '/frontend/public'));
-
 app.use(mount(api));
 
 app.use(function *() {
-  // For html5Mode
-  var foo = yield this.render('index');
+  this.respond = false;
+  proxy.web(this.req, this.res, {
+    target: 'http://127.0.0.1:8080'
+  });
 });
 
 app.listen(3000, function() {
